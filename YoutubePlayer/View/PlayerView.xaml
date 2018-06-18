@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:YoutubePlayer.View"
         xmlns:viewmodel="clr-namespace:YoutubePlayer.ViewModel"
+        xmlns:common="clr-namespace:YoutubePlayer.Common"
         mc:Ignorable="d"
         Title="PlayerView" Height="300" Width="900">
     <Window.Resources>
         <viewmodel:PlayerViewModel x:Key="PlayerViewModel" />
+        <common:BoolToOppositeVisibilityConverter x:Key="BoolToOppositeVisibilityConverter"/>
     </Window.Resources>
     <Window.DataContext>
         <Binding Source="{StaticResource PlayerViewModel}" />
@@ -33,18 +35,27 @@
             <Button Width="70" Margin="90,0,0,0" Content="Extend" Command="{Binding SearchClick}"/>
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
-            <ListView Width="200" Margin="10,0,10,0">
-
+            <ListView Width="200" Margin="10,0,10,0" ItemsSource="{Binding MusicLists}">
+                <ListView.View>
+                    <GridView x:Name="CustomGridView">
+                        <GridViewColumn Header="Title" >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontSize="13" Text="{Binding Title}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
             </ListView>
             <StackPanel Width="70" Margin="0,0,10,0" Orientation="Vertical">
                 <Button Content="Back" Margin="0,0,0,10" />
                 <Button Content="Play" Margin="0,0,0,10" />
                 <Button Content="Next" />
-                <Button Content="Ok" Margin="0,30,0,10"/>
-                <Button Content="Cancel" />
             </StackPanel>
         </StackPanel>
-        
-        
+        <TextBlock Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" Visibility="{Binding IsExtend, Converter={StaticResource BoolToOppositeVisibilityConverter}}">
+            
+        </TextBlock>
     </Grid>
 </Window>
