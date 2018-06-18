@@ -10,7 +10,7 @@ namespace YoutubePlayer.ViewModel
     public class PlayerViewModel : BaseProperty
     {
         #region Private Variables
-        private readonly string _googleApiKey = "AIzaSyCcfTgTcdQGn9TpVodnaFujTHmqC25Jhlk";
+        private readonly string _googleApiKey = "yourApiKey";
 
         private readonly string _baseYoutubeUrl = "http://youtube.com/watch?v=";
 
