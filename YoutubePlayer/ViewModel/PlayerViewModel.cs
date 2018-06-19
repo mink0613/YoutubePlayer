@@ -1,6 +1,7 @@
 ﻿using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Input;
 using YoutubePlayer.Common;
 using YoutubePlayer.Model;
@@ -20,9 +21,14 @@ namespace YoutubePlayer.ViewModel
     public class PlayerViewModel : BaseProperty
     {
         #region Private Variables
-        private readonly string _googleApiKey = "yourKey";
+        private readonly string _projectPath = Directory.GetParent(Directory.GetParent(
+            Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)).ToString()).ToString();
+
+        private readonly string _apiKeyFile = "ApiKey.txt";
 
         private readonly string _baseYoutubeUrl = "http://youtube.com/watch?v=";
+
+        private string _googleApiKey = "";
 
         private bool _isExtend;
 
@@ -116,7 +122,17 @@ namespace YoutubePlayer.ViewModel
         private void Initialize()
         {
             _musicLists = new ObservableCollection<PlayerModel>();
+            ReadApiKey();
             ReadSavedMusicLists();
+        }
+
+        private void ReadApiKey()
+        {
+            string path = Path.Combine(_projectPath, "ApiKey", _apiKeyFile);
+            using (StreamReader reader = new StreamReader(path))
+            {
+                _googleApiKey = reader.ReadLine();
+            }
         }
 
         private void ShowSearchView()
