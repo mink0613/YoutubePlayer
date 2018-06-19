@@ -4,19 +4,31 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using YoutubePlayer.Common;
 using YoutubePlayer.Model;
+using YoutubePlayer.View;
 
 namespace YoutubePlayer.ViewModel
 {
+    public enum PlayerViewParam
+    {
+        Search,
+        Extend,
+        Prev,
+        Play,
+        Next
+    }
+
     public class PlayerViewModel : BaseProperty
     {
         #region Private Variables
-        private readonly string _googleApiKey = "yourApiKey";
+        private readonly string _googleApiKey = "AIzaSyCcfTgTcdQGn9TpVodnaFujTHmqC25Jhlk";
 
         private readonly string _baseYoutubeUrl = "http://youtube.com/watch?v=";
 
         private bool _isExtend;
 
         private ObservableCollection<PlayerModel> _musicLists;
+
+        private string _youTubeAddress;
 
         private ICommand _buttonClicks;
         #endregion
@@ -48,6 +60,19 @@ namespace YoutubePlayer.ViewModel
             }
         }
 
+        public string YouTubeAddress
+        {
+            get
+            {
+                return _youTubeAddress;
+            }
+            set
+            {
+                _youTubeAddress = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand ButtonClicks
         {
             get
@@ -70,7 +95,7 @@ namespace YoutubePlayer.ViewModel
                 ApiKey = _googleApiKey,
                 ApplicationName = "YouTube Player"
             });
-
+            
             var request = youtube.Search.List("snippet");
             request.Q = "lineage";
             request.MaxResults = 25;
@@ -84,6 +109,8 @@ namespace YoutubePlayer.ViewModel
                     MusicLists.Add(new PlayerModel(item.Snippet.Title, _baseYoutubeUrl + item.Id.VideoId));
                 }
             }
+
+            YouTubeAddress = MusicLists[0].Address;
         }
 
         private void Initialize()
@@ -92,9 +119,32 @@ namespace YoutubePlayer.ViewModel
             ReadSavedMusicLists();
         }
 
+        private void ShowSearchView()
+        {
+            SearchView view = new SearchView();
+            view.ViewModel.RequestSave += (string title, string url) =>
+            {
+                if (title != null && url != null)
+                {
+                    MusicLists.Add(new PlayerModel(title, url));
+                }
+            };
+            view.ViewModel.RequestClose += (bool result) =>
+            {
+                view.Close();
+            };
+        }
+
         private void OnButtonClicks(object param)
         {
-            string clicked = param as string;
+            PlayerViewParam clicked = (PlayerViewParam)param;
+            switch (clicked)
+            {
+                case PlayerViewParam.Search:
+                    break;
+                case PlayerViewParam.Extend:
+                    break;
+            }
 
         }
 

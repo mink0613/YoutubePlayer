@@ -92,6 +92,8 @@
     <Compile Include="Common\BaseProperty.cs" />
     <Compile Include="Common\BoolToVisibilityConverter.cs" />
     <Compile Include="Common\RelayCommand.cs" />
+    <Compile Include="Common\WebBrowserHelper.cs" />
+    <Compile Include="Common\YouTubeHelper.cs" />
     <Compile Include="Model\PlayerModel.cs" />
     <Compile Include="Model\SearchModel.cs" />
     <Compile Include="ViewModel\PlayerViewModel.cs" />

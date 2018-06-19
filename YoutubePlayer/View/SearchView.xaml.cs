@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using YoutubePlayer.ViewModel;
 
 namespace YoutubePlayer.View
 {
@@ -19,9 +20,23 @@ namespace YoutubePlayer.View
     /// </summary>
     public partial class SearchView : Window
     {
+        public SearchViewModel ViewModel
+        {
+            get
+            {
+                return DataContext as SearchViewModel;
+            }
+        }
+
         public SearchView()
         {
             InitializeComponent();
+
+            ViewModel.RequestClose += (loginResult) =>
+            {
+                DialogResult = loginResult;
+                Close();
+            };
         }
     }
 }

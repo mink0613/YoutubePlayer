@@ -31,8 +31,8 @@
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
-            <Button Width="70" Margin="40,0,0,0" Content="Search" Command="{Binding SearchClick}"/>
-            <Button Width="70" Margin="90,0,0,0" Content="Extend" Command="{Binding SearchClick}"/>
+            <Button Width="70" Margin="40,0,0,0" Content="Search" Command="{Binding ButtonClicks}" CommandParameter="{x:Static viewmodel:PlayerViewParam.Search}"/>
+            <Button Width="70" Margin="90,0,0,0" Content="Extend" Command="{Binding ButtonClicks}" CommandParameter="{x:Static viewmodel:PlayerViewParam.Extend}"/>
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
             <ListView Width="200" Margin="10,0,10,0" ItemsSource="{Binding MusicLists}">
@@ -54,8 +54,9 @@
                 <Button Content="Next" />
             </StackPanel>
         </StackPanel>
-        <TextBlock Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" Visibility="{Binding IsExtend, Converter={StaticResource BoolToOppositeVisibilityConverter}}">
+        <WebBrowser Name="PlayBrowser" Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" common:WebBrowserHelper.BindableSource="{Binding YouTubeAddress}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    >
             
-        </TextBlock>
+        </WebBrowser>
     </Grid>
 </Window>

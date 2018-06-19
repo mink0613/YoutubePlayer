@@ -20,9 +20,12 @@ namespace YoutubePlayer.ViewModel
         #endregion
 
         #region Public Properties
+        public event Action<bool> RequestClose;
+
+        public event Action<string, string> RequestSave;
         #endregion
 
-        #region Private Variables
+        #region Private Methods
         #endregion
 
         #region Constructor
