@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
 using System.Windows.Input;
 using YoutubePlayer.Common;
 using YoutubePlayer.Model;
@@ -24,6 +26,8 @@ namespace YoutubePlayer.ViewModel
         private readonly int _originalWidth = 310;
 
         private readonly int _extendedWidth = 650;
+
+        private readonly string _playListFile = "PlayList.txt";
 
         private int _playerWidth;
 
@@ -145,7 +149,41 @@ namespace YoutubePlayer.ViewModel
                 _musicList.Clear();
             }
 
-            //YouTubeAddress = MusicLists[0].Address;
+            string path = Path.Combine(Helper.ProjectPath, _playListFile);
+            if (File.Exists(path) == false)
+            {
+                return;
+            }
+
+            using (StreamReader reader = new StreamReader(path))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] items = line.Split('\t');
+                    if (items == null || items.Length != 2)
+                    {
+                        continue;
+                    }
+
+                    string title = items[0];
+                    string address = items[1];
+                    MusicList.Add(new PlayerModel(title, address));
+                }
+            }
+        }
+
+        private void WriteMusicList()
+        {
+            string path = Path.Combine(Helper.ProjectPath, _playListFile);
+            using (StreamWriter writer = new StreamWriter(path, false))
+            {
+                foreach (PlayerModel model in MusicList)
+                {
+                    string line = model.Title + "\t" + model.Address;
+                    writer.WriteLine(line);
+                }
+            }
         }
 
         private void Initialize()
@@ -299,6 +337,13 @@ namespace YoutubePlayer.ViewModel
         private void RegisterCommands()
         {
             _buttonClicks = new RelayCommand((param) => OnButtonClicks(param));
+        }
+        #endregion
+
+        #region Public Methods
+        public void OnClosing(object sender, CancelEventArgs arg)
+        {
+            WriteMusicList();
         }
         #endregion
 

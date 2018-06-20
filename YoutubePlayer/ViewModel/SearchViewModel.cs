@@ -24,9 +24,6 @@ namespace YoutubePlayer.ViewModel
     public class SearchViewModel : BaseProperty
     {
         #region Private Variables
-        private readonly string _projectPath = Directory.GetParent(Directory.GetParent(
-            Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)).ToString()).ToString();
-
         private readonly string _baseYoutubeUrl = "http://youtube.com/watch?v=";
 
         private readonly string _apiKeyFile = "ApiKey.txt";
@@ -103,7 +100,7 @@ namespace YoutubePlayer.ViewModel
 
         private void ReadApiKey()
         {
-            string path = Path.Combine(_projectPath, "ApiKey", _apiKeyFile);
+            string path = Path.Combine(Helper.ProjectPath, "ApiKey", _apiKeyFile);
             using (StreamReader reader = new StreamReader(path))
             {
                 _googleApiKey = reader.ReadLine();

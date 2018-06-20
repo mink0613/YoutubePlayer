@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using YoutubePlayer.ViewModel;
 
 namespace YoutubePlayer.View
 {
@@ -7,9 +8,18 @@ namespace YoutubePlayer.View
     /// </summary>
     public partial class PlayerView : Window
     {
+        public PlayerViewModel ViewModel
+        {
+            get
+            {
+                return DataContext as PlayerViewModel;
+            }
+        }
+
         public PlayerView()
         {
             InitializeComponent();
+            Closing += ViewModel.OnClosing;
         }
     }
 }
