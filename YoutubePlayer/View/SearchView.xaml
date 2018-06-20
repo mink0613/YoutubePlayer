@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:YoutubePlayer.View"
         xmlns:viewmodel="clr-namespace:YoutubePlayer.ViewModel"
         mc:Ignorable="d"
-        Title="SearchView" Height="300" Width="300">
+        Title="Search YouTube Video" Height="300" Width="300">
     <Window.Resources>
         <viewmodel:SearchViewModel x:Key="SearchViewModel" />
     </Window.Resources>

@@ -7,7 +7,7 @@
         xmlns:viewmodel="clr-namespace:YoutubePlayer.ViewModel"
         xmlns:common="clr-namespace:YoutubePlayer.Common"
         mc:Ignorable="d"
-        Title="YouTube Player" Height="300" Width="650">
+        Title="YouTube Player" Height="300" Width="{Binding PlayerWidth, Mode=TwoWay}">
     <Window.Resources>
         <viewmodel:PlayerViewModel x:Key="PlayerViewModel" />
         <common:BoolToOppositeVisibilityConverter x:Key="BoolToOppositeVisibilityConverter"/>
@@ -54,9 +54,7 @@
                 <Button Content="Next" Command="{Binding ButtonClicks}" CommandParameter="{x:Static viewmodel:PlayerViewParam.Next}" />
             </StackPanel>
         </StackPanel>
-        <WebBrowser Name="PlayBrowser" Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" common:WebBrowserHelper.BindableSource="{Binding YouTubeAddress}" HorizontalAlignment="Center" VerticalAlignment="Center"
-                    >
-            
-        </WebBrowser>
+        <WebBrowser Name="PlayBrowser" Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" common:WebBrowserHelper.BindableSource="{Binding YouTubeAddress}" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Grid>
 </Window>

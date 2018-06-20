@@ -18,6 +18,12 @@ namespace YoutubePlayer.ViewModel
     public class PlayerViewModel : BaseProperty
     {
         #region Private Variables
+        private readonly int _originalWidth = 310;
+
+        private readonly int _extendedWidth = 650;
+
+        private int _playerWidth;
+
         private bool _isExtend;
 
         private ObservableCollection<PlayerModel> _musicList;
@@ -32,6 +38,19 @@ namespace YoutubePlayer.ViewModel
         #endregion
 
         #region Public Properteis
+        public int PlayerWidth
+        {
+            get
+            {
+                return _playerWidth;
+            }
+            set
+            {
+                _playerWidth = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool IsExtend
         {
             get
@@ -41,6 +60,15 @@ namespace YoutubePlayer.ViewModel
             set
             {
                 _isExtend = value;
+                if (_isExtend == true)
+                {
+                    PlayerWidth = _extendedWidth;
+                }
+                else
+                {
+                    PlayerWidth = _originalWidth;
+                }
+
                 OnPropertyChanged();
             }
         }
@@ -107,7 +135,7 @@ namespace YoutubePlayer.ViewModel
         #endregion
 
         #region Private Methods
-        private async void ReadSavedMusicList()
+        private void ReadSavedMusicList()
         {
             if (_musicList != null)
             {
@@ -119,6 +147,7 @@ namespace YoutubePlayer.ViewModel
 
         private void Initialize()
         {
+            IsExtend = false;
             _musicList = new ObservableCollection<PlayerModel>();
             ReadSavedMusicList();
         }
