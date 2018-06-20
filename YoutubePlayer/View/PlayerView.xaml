@@ -7,7 +7,7 @@
         xmlns:viewmodel="clr-namespace:YoutubePlayer.ViewModel"
         xmlns:common="clr-namespace:YoutubePlayer.Common"
         mc:Ignorable="d"
-        Title="PlayerView" Height="300" Width="650">
+        Title="YouTube Player" Height="300" Width="650">
     <Window.Resources>
         <viewmodel:PlayerViewModel x:Key="PlayerViewModel" />
         <common:BoolToOppositeVisibilityConverter x:Key="BoolToOppositeVisibilityConverter"/>
@@ -35,7 +35,7 @@
             <Button Width="70" Margin="90,0,0,0" Content="Extend" Command="{Binding ButtonClicks}" CommandParameter="{x:Static viewmodel:PlayerViewParam.Extend}"/>
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
-            <ListView Width="200" Margin="10,0,10,0" ItemsSource="{Binding MusicList}" SelectedItem="{Binding SelectedMusic}">
+            <ListView Width="200" Margin="10,0,10,0" ItemsSource="{Binding MusicList}" SelectedItem="{Binding SelectedMusic}" SelectedIndex="{Binding SelectedIndex}">
                 <ListView.View>
                     <GridView x:Name="CustomGridView">
                         <GridViewColumn Header="Title" Width="200" >
@@ -49,9 +49,9 @@
                 </ListView.View>
             </ListView>
             <StackPanel Width="70" Margin="0,0,10,0" Orientation="Vertical">
-                <Button Content="Back" Margin="0,0,0,10" />
-                <Button Content="Play" Margin="0,0,0,10" />
-                <Button Content="Next" />
+                <Button Content="Back" Margin="0,0,0,10" Command="{Binding ButtonClicks}" CommandParameter="{x:Static viewmodel:PlayerViewParam.Prev}" />
+                <Button Content="Play" Margin="0,0,0,10" Command="{Binding ButtonClicks}" CommandParameter="{x:Static viewmodel:PlayerViewParam.Play}" />
+                <Button Content="Next" Command="{Binding ButtonClicks}" CommandParameter="{x:Static viewmodel:PlayerViewParam.Next}" />
             </StackPanel>
         </StackPanel>
         <WebBrowser Name="PlayBrowser" Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" common:WebBrowserHelper.BindableSource="{Binding YouTubeAddress}" HorizontalAlignment="Center" VerticalAlignment="Center"

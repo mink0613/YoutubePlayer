@@ -1,7 +1,4 @@
-﻿using Google.Apis.Services;
-using Google.Apis.YouTube.v3;
-using System.Collections.ObjectModel;
-using System.IO;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using YoutubePlayer.Common;
 using YoutubePlayer.Model;
@@ -26,6 +23,8 @@ namespace YoutubePlayer.ViewModel
         private ObservableCollection<PlayerModel> _musicList;
 
         private PlayerModel _selectedMusic;
+
+        private int _selectedIndex;
 
         private string _youTubeAddress;
 
@@ -68,6 +67,19 @@ namespace YoutubePlayer.ViewModel
             set
             {
                 _selectedMusic = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int SelectedIndex
+        {
+            get
+            {
+                return _selectedIndex;
+            }
+            set
+            {
+                _selectedIndex = value;
                 OnPropertyChanged();
             }
         }
@@ -128,14 +140,46 @@ namespace YoutubePlayer.ViewModel
             view.Show();
         }
 
-        private void PlayMusic()
+        private void PlayPreviousMusic()
         {
-            if (SelectedMusic == null)
+            if (MusicList.Count == 0)
             {
                 return;
             }
 
-            YouTubeAddress = SelectedMusic.Address;
+            if (SelectedIndex == 0)
+            {
+                return;
+            }
+
+            SelectedIndex--;
+            YouTubeAddress = MusicList[SelectedIndex].Address;
+        }
+
+        private void PlayNextMusic()
+        {
+            if (MusicList.Count == 0)
+            {
+                return;
+            }
+
+            if (MusicList.Count - 1 == SelectedIndex)
+            {
+                return;
+            }
+
+            SelectedIndex--;
+            YouTubeAddress = MusicList[SelectedIndex].Address;
+        }
+
+        private void PlayMusic()
+        {
+            if (MusicList.Count == 0)
+            {
+                return;
+            }
+
+            YouTubeAddress = MusicList[SelectedIndex].Address;
         }
 
         private void OnButtonClicks(object param)
@@ -150,11 +194,13 @@ namespace YoutubePlayer.ViewModel
                     IsExtend = !IsExtend;
                     break;
                 case PlayerViewParam.Prev:
+                    PlayPreviousMusic();
                     break;
                 case PlayerViewParam.Play:
                     PlayMusic();
                     break;
                 case PlayerViewParam.Next:
+                    PlayNextMusic();
                     break;
             }
 
