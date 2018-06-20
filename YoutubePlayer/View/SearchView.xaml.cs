@@ -22,7 +22,6 @@ namespace YoutubePlayer.View
 
             ViewModel.RequestClose += (loginResult) =>
             {
-                DialogResult = loginResult;
                 Close();
             };
         }
