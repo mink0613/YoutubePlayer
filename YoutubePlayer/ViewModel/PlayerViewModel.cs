@@ -21,15 +21,6 @@ namespace YoutubePlayer.ViewModel
     public class PlayerViewModel : BaseProperty
     {
         #region Private Variables
-        private readonly string _projectPath = Directory.GetParent(Directory.GetParent(
-            Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)).ToString()).ToString();
-
-        private readonly string _apiKeyFile = "ApiKey.txt";
-
-        private readonly string _baseYoutubeUrl = "http://youtube.com/watch?v=";
-
-        private string _googleApiKey = "";
-
         private bool _isExtend;
 
         private ObservableCollection<PlayerModel> _musicLists;
@@ -96,43 +87,13 @@ namespace YoutubePlayer.ViewModel
                 _musicLists.Clear();
             }
 
-            var youtube = new YouTubeService(new BaseClientService.Initializer()
-            {
-                ApiKey = _googleApiKey,
-                ApplicationName = "YouTube Player"
-            });
-            
-            var request = youtube.Search.List("snippet");
-            request.Q = "lineage";
-            request.MaxResults = 25;
-
-            var result = await request.ExecuteAsync();
-
-            foreach (var item in result.Items)
-            {
-                if (item.Id.Kind == "youtube#video")
-                {
-                    MusicLists.Add(new PlayerModel(item.Snippet.Title, _baseYoutubeUrl + item.Id.VideoId));
-                }
-            }
-
-            YouTubeAddress = MusicLists[0].Address;
+            //YouTubeAddress = MusicLists[0].Address;
         }
 
         private void Initialize()
         {
             _musicLists = new ObservableCollection<PlayerModel>();
-            ReadApiKey();
             ReadSavedMusicLists();
-        }
-
-        private void ReadApiKey()
-        {
-            string path = Path.Combine(_projectPath, "ApiKey", _apiKeyFile);
-            using (StreamReader reader = new StreamReader(path))
-            {
-                _googleApiKey = reader.ReadLine();
-            }
         }
 
         private void ShowSearchView()
@@ -149,6 +110,7 @@ namespace YoutubePlayer.ViewModel
             {
                 view.Close();
             };
+            view.Show();
         }
 
         private void OnButtonClicks(object param)
@@ -157,8 +119,16 @@ namespace YoutubePlayer.ViewModel
             switch (clicked)
             {
                 case PlayerViewParam.Search:
+                    ShowSearchView();
                     break;
                 case PlayerViewParam.Extend:
+                    IsExtend = !IsExtend;
+                    break;
+                case PlayerViewParam.Prev:
+                    break;
+                case PlayerViewParam.Play:
+                    break;
+                case PlayerViewParam.Next:
                     break;
             }
 

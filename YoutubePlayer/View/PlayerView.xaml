@@ -7,7 +7,7 @@
         xmlns:viewmodel="clr-namespace:YoutubePlayer.ViewModel"
         xmlns:common="clr-namespace:YoutubePlayer.Common"
         mc:Ignorable="d"
-        Title="PlayerView" Height="300" Width="900">
+        Title="PlayerView" Height="300" Width="650">
     <Window.Resources>
         <viewmodel:PlayerViewModel x:Key="PlayerViewModel" />
         <common:BoolToOppositeVisibilityConverter x:Key="BoolToOppositeVisibilityConverter"/>
@@ -38,10 +38,10 @@
             <ListView Width="200" Margin="10,0,10,0" ItemsSource="{Binding MusicLists}">
                 <ListView.View>
                     <GridView x:Name="CustomGridView">
-                        <GridViewColumn Header="Title" >
+                        <GridViewColumn Header="Title" Width="200" >
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock FontSize="13" Text="{Binding Title}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                                    <TextBlock FontSize="13" Text="{Binding Title}" ToolTip="{Binding RelativeSource={RelativeSource Self}, Path=Text}" HorizontalAlignment="Left" VerticalAlignment="Center" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
