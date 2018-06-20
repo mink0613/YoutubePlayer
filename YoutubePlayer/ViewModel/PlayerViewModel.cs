@@ -23,7 +23,9 @@ namespace YoutubePlayer.ViewModel
         #region Private Variables
         private bool _isExtend;
 
-        private ObservableCollection<PlayerModel> _musicLists;
+        private ObservableCollection<PlayerModel> _musicList;
+
+        private PlayerModel _selectedMusic;
 
         private string _youTubeAddress;
 
@@ -44,15 +46,28 @@ namespace YoutubePlayer.ViewModel
             }
         }
 
-        public ObservableCollection<PlayerModel> MusicLists
+        public ObservableCollection<PlayerModel> MusicList
         {
             get
             {
-                return _musicLists;
+                return _musicList;
             }
             set
             {
-                _musicLists = value;
+                _musicList = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public PlayerModel SelectedMusic
+        {
+            get
+            {
+                return _selectedMusic;
+            }
+            set
+            {
+                _selectedMusic = value;
                 OnPropertyChanged();
             }
         }
@@ -80,11 +95,11 @@ namespace YoutubePlayer.ViewModel
         #endregion
 
         #region Private Methods
-        private async void ReadSavedMusicLists()
+        private async void ReadSavedMusicList()
         {
-            if (_musicLists != null)
+            if (_musicList != null)
             {
-                _musicLists.Clear();
+                _musicList.Clear();
             }
 
             //YouTubeAddress = MusicLists[0].Address;
@@ -92,8 +107,8 @@ namespace YoutubePlayer.ViewModel
 
         private void Initialize()
         {
-            _musicLists = new ObservableCollection<PlayerModel>();
-            ReadSavedMusicLists();
+            _musicList = new ObservableCollection<PlayerModel>();
+            ReadSavedMusicList();
         }
 
         private void ShowSearchView()
@@ -103,7 +118,7 @@ namespace YoutubePlayer.ViewModel
             {
                 if (title != null && url != null)
                 {
-                    MusicLists.Add(new PlayerModel(title, url));
+                    MusicList.Add(new PlayerModel(title, url));
                 }
             };
             view.ViewModel.RequestClose += (bool result) =>
@@ -111,6 +126,16 @@ namespace YoutubePlayer.ViewModel
                 view.Close();
             };
             view.Show();
+        }
+
+        private void PlayMusic()
+        {
+            if (SelectedMusic == null)
+            {
+                return;
+            }
+
+            YouTubeAddress = SelectedMusic.Address;
         }
 
         private void OnButtonClicks(object param)
@@ -127,6 +152,7 @@ namespace YoutubePlayer.ViewModel
                 case PlayerViewParam.Prev:
                     break;
                 case PlayerViewParam.Play:
+                    PlayMusic();
                     break;
                 case PlayerViewParam.Next:
                     break;

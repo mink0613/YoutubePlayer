@@ -35,7 +35,7 @@
             <Button Width="70" Margin="90,0,0,0" Content="Extend" Command="{Binding ButtonClicks}" CommandParameter="{x:Static viewmodel:PlayerViewParam.Extend}"/>
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal">
-            <ListView Width="200" Margin="10,0,10,0" ItemsSource="{Binding MusicLists}">
+            <ListView Width="200" Margin="10,0,10,0" ItemsSource="{Binding MusicList}" SelectedItem="{Binding SelectedMusic}">
                 <ListView.View>
                     <GridView x:Name="CustomGridView">
                         <GridViewColumn Header="Title" Width="200" >
