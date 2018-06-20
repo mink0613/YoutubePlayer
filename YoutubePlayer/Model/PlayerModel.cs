@@ -1,8 +1,9 @@
-﻿using YoutubePlayer.Common;
+﻿using System;
+using YoutubePlayer.Common;
 
 namespace YoutubePlayer.Model
 {
-    public class PlayerModel : BaseProperty
+    public class PlayerModel : BaseProperty, ICloneable
     {
         #region Private Variables
         private string _title;
@@ -48,6 +49,15 @@ namespace YoutubePlayer.Model
         {
             Title = title;
             Address = address;
+        }
+
+        public object Clone()
+        {
+            PlayerModel model = new PlayerModel();
+            model.Title = this.Title;
+            model.Address = this.Address;
+
+            return model;
         }
         #endregion
     }

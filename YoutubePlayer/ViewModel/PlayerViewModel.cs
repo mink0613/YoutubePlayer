@@ -12,7 +12,10 @@ namespace YoutubePlayer.ViewModel
         Extend,
         Prev,
         Play,
-        Next
+        Next,
+        ListUp,
+        ListDown,
+        ListDelete
     }
 
     public class PlayerViewModel : BaseProperty
@@ -211,6 +214,56 @@ namespace YoutubePlayer.ViewModel
             YouTubeAddress = MusicList[SelectedIndex].Address;
         }
 
+        private void ListUp()
+        {
+            if (SelectedMusic == null)
+            {
+                return;
+            }
+
+            int index = MusicList.IndexOf(SelectedMusic);
+            if (index == 0)
+            {
+                return;
+            }
+
+            PlayerModel model = SelectedMusic.Clone() as PlayerModel;
+            MusicList.Remove(SelectedMusic);
+            MusicList.Insert(index - 1, model);
+
+            SelectedIndex = MusicList.IndexOf(model);
+        }
+
+        private void ListDown()
+        {
+            if (SelectedMusic == null)
+            {
+                return;
+            }
+
+            int index = MusicList.IndexOf(SelectedMusic);
+            if (index == MusicList.Count - 1)
+            {
+                return;
+            }
+
+            PlayerModel model = SelectedMusic.Clone() as PlayerModel;
+            MusicList.Remove(SelectedMusic);
+            MusicList.Insert(index + 1, model);
+
+            SelectedIndex = MusicList.IndexOf(model);
+        }
+
+        private void ListDelete()
+        {
+            if (SelectedMusic == null)
+            {
+                return;
+            }
+
+            MusicList.Remove(SelectedMusic);
+        }
+
         private void OnButtonClicks(object param)
         {
             PlayerViewParam clicked = (PlayerViewParam)param;
@@ -231,8 +284,16 @@ namespace YoutubePlayer.ViewModel
                 case PlayerViewParam.Next:
                     PlayNextMusic();
                     break;
+                case PlayerViewParam.ListUp:
+                    ListUp();
+                    break;
+                case PlayerViewParam.ListDown:
+                    ListDown();
+                    break;
+                case PlayerViewParam.ListDelete:
+                    ListDelete();
+                    break;
             }
-
         }
 
         private void RegisterCommands()
