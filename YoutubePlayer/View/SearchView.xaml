@@ -13,6 +13,9 @@
     <Window.DataContext>
         <Binding Source="{StaticResource SearchViewModel}" />
     </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding Key="Esc" Command="{Binding ButtonClicks}" CommandParameter="{x:Static viewmodel:SearchViewParam.Cancel}"/>
+    </Window.InputBindings>
     <Grid>
         <Grid.RowDefinitions>
             <!-- MARGIN -->
@@ -34,7 +37,11 @@
             <!-- MARGIN -->
             <ColumnDefinition Width="10" />
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Row="1" Grid.Column="1" Name="SearchBox" VerticalContentAlignment="Center" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Name="SearchBox" VerticalContentAlignment="Center" Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding ButtonClicks}" CommandParameter="{x:Static viewmodel:SearchViewParam.Search}"/>
+            </TextBox.InputBindings>
+        </TextBox>
         <Button Grid.Row="1" Grid.Column="3" Content="Search" Height="40" Command="{Binding ButtonClicks}" CommandParameter="{x:Static viewmodel:SearchViewParam.Search}"/>
         <ListView Grid.Row="3" Grid.Column="1" ItemsSource="{Binding SearchList}" SelectedItem="{Binding SelectedSearch}">
             <ListView.View>
