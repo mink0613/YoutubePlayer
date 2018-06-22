@@ -1,12 +1,8 @@
 ﻿using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using YoutubePlayer.Common;
@@ -114,13 +110,13 @@ namespace YoutubePlayer.ViewModel
                 MessageBox.Show("Please enter title or musician name");
                 return;
             }
-
+            
             var youtube = new YouTubeService(new BaseClientService.Initializer()
             {
                 ApiKey = _googleApiKey,
                 ApplicationName = "YouTube Player"
             });
-
+            
             var request = youtube.Search.List("snippet");
             request.Q = SearchQuery;
             request.MaxResults = 25;

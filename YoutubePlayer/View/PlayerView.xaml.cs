@@ -20,6 +20,12 @@ namespace YoutubePlayer.View
         {
             InitializeComponent();
             Closing += ViewModel.OnClosing;
+            Loaded += PlayerView_Loaded;
+        }
+
+        private void PlayerView_Loaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.BrowserHandle = (int)PlayBrowser.Handle;
         }
     }
 }

@@ -60,6 +60,7 @@
             </StackPanel>
         </StackPanel>
         <WebBrowser Name="PlayBrowser" Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" common:WebBrowserHelper.BindableSource="{Binding YouTubeAddress}" 
-                    HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    HorizontalAlignment="Center" VerticalAlignment="Center" Focusable="{Binding IsPlayerFocused, Mode=TwoWay}">
+        </WebBrowser>
     </Grid>
 </Window>

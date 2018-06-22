@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.IO;
+using System.Text.RegularExpressions;
 
 namespace YoutubePlayer.Common
 {
@@ -52,7 +53,7 @@ namespace YoutubePlayer.Common
             var embed = "<html><head>" 
                 + "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"/>" 
                 + "</head><body>" 
-                + "<iframe width=\"320\" height=\"240\" src=\"{0}?autoplay=1&modestbranding=1&rel=0\""
+                + "<iframe id=youtubeplayer width=\"320\" height=\"240\" src=\"{0}?autoplay=1&modestbranding=1&rel=0\""
                 + "frameborder = \"0\" encrypted-media\" allowfullscreen></iframe>" 
                 + "</body></html>";
 

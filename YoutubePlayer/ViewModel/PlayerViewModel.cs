@@ -22,6 +22,15 @@ namespace YoutubePlayer.ViewModel
 
     public class PlayerViewModel : BaseProperty
     {
+        #region enum
+        private enum PlayStatus
+        {
+            Initial,
+            Playing,
+            Paused
+        }
+        #endregion
+
         #region Private Variables
         private readonly int _originalWidth = 310;
 
@@ -40,6 +49,12 @@ namespace YoutubePlayer.ViewModel
         private int _selectedIndex;
 
         private string _youTubeAddress;
+
+        private bool _isPlayerFocused;
+
+        private int _browserHandle;
+
+        private PlayStatus _currentStatus;
 
         private ICommand _buttonClicks;
         #endregion
@@ -132,6 +147,32 @@ namespace YoutubePlayer.ViewModel
             }
         }
 
+        public bool IsPlayerFocused
+        {
+            get
+            {
+                return _isPlayerFocused;
+            }
+            set
+            {
+                _isPlayerFocused = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int BrowserHandle
+        {
+            get
+            {
+                return _browserHandle;
+            }
+            set
+            {
+                _browserHandle = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ICommand ButtonClicks
         {
             get
@@ -189,6 +230,7 @@ namespace YoutubePlayer.ViewModel
         private void Initialize()
         {
             IsExtend = false;
+            _currentStatus = PlayStatus.Initial;
             _musicList = new ObservableCollection<PlayerModel>();
             ReadSavedMusicList();
         }
@@ -249,7 +291,25 @@ namespace YoutubePlayer.ViewModel
                 return;
             }
 
-            YouTubeAddress = MusicList[SelectedIndex].Address;
+            if (_currentStatus == PlayStatus.Initial)
+            {
+                YouTubeAddress = MusicList[SelectedIndex].Address;
+                _currentStatus = PlayStatus.Playing;
+            }
+            else if (_currentStatus == PlayStatus.Playing)
+            {
+                /**
+                 * TODO
+                 * */
+                _currentStatus = PlayStatus.Paused;
+            }
+            else if (_currentStatus == PlayStatus.Paused)
+            {
+                /**
+                 * TODO
+                 * */
+                _currentStatus = PlayStatus.Playing;
+            }
         }
 
         private void ListUp()
