@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using YoutubePlayer.Common;
@@ -18,12 +17,6 @@ namespace YoutubePlayer.ViewModel
     public class SearchViewModel : BaseProperty
     {
         #region Private Variables
-        private readonly string _baseYoutubeUrl = "http://youtube.com/watch?v=";
-
-        private readonly string _apiKeyFile = "ApiKey.txt";
-
-        private string _googleApiKey = "";
-
         private string _searchQuery;
 
         private ObservableCollection<SearchModel> _searchList;
@@ -92,15 +85,6 @@ namespace YoutubePlayer.ViewModel
             SearchList = new ObservableCollection<SearchModel>();
         }
 
-        private void ReadApiKey()
-        {
-            string path = Path.Combine(Helper.ProjectPath, "ApiKey", _apiKeyFile);
-            using (StreamReader reader = new StreamReader(path))
-            {
-                _googleApiKey = reader.ReadLine();
-            }
-        }
-
         private async void SearchMusic()
         {
             if (SearchQuery == null || SearchQuery.Length == 0)
@@ -117,7 +101,7 @@ namespace YoutubePlayer.ViewModel
             {
                 if (item.Id.Kind == "youtube#video")
                 {
-                    SearchList.Add(new SearchModel(item.Snippet.Title, _baseYoutubeUrl + item.Id.VideoId));
+                    SearchList.Add(new SearchModel(item.Snippet.Title, YouTubeHelper.GetBaseUrl() + item.Id.VideoId));
                 }
             }
         }
@@ -155,7 +139,6 @@ namespace YoutubePlayer.ViewModel
         {
             Initialize();
             RegisterCommands();
-            ReadApiKey();
         }
         #endregion
     }

@@ -12,6 +12,8 @@ namespace YoutubePlayer.Common
     {
         private static readonly Regex _youTubeURLIDRegex = new Regex(@"[\?&]v=(?<v>[^&]+)");
 
+        private static readonly string _baseYoutubeUrl = "http://youtube.com/watch?v=";
+
         private static readonly string _apiKeyFile = "ApiKey.txt";
 
         private static string _googleApiKey = string.Empty;
@@ -61,6 +63,19 @@ namespace YoutubePlayer.Common
             return scr;
         }
 
+        private static string GetEmbeddedYouTubeUrl(string src)
+        {
+            // Official url: https://developers.google.com/youtube/player_parameters?hl=en
+            var embed = "<html><head>"
+                + "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"/>"
+                + "</head><body>"
+                + "<iframe id=youtubeplayer width=\"320\" height=\"240\" src=\"{0}?autoplay=1&modestbranding=1&rel=0\""
+                + "frameborder = \"0\" encrypted-media\" allowfullscreen></iframe>"
+                + "</body></html>";
+
+            return string.Format(embed, src);
+        }
+
         /// <summary>
         /// Deprecated: YouTube does not support anymore
         /// </summary>
@@ -80,20 +95,7 @@ namespace YoutubePlayer.Common
 
             return page;
         }
-
-        private static string GetEmbeddedYouTubeUrl(string src)
-        {
-            // Official url: https://developers.google.com/youtube/player_parameters?hl=en
-            var embed = "<html><head>" 
-                + "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\"/>" 
-                + "</head><body>" 
-                + "<iframe id=youtubeplayer width=\"320\" height=\"240\" src=\"{0}?autoplay=1&modestbranding=1&rel=0\""
-                + "frameborder = \"0\" encrypted-media\" allowfullscreen></iframe>" 
-                + "</body></html>";
-
-            return string.Format(embed, src);
-        }
-
+        
         public static string GetEmbeddedYouTubeVideoUrl(string url)
         {
             Match m = _youTubeURLIDRegex.Match(url);
@@ -102,6 +104,11 @@ namespace YoutubePlayer.Common
             string source = _youTubeEmbedUrl + id;
 
             return GetEmbeddedYouTubeUrl(source);
+        }
+
+        public static string GetBaseUrl()
+        {
+            return _baseYoutubeUrl;
         }
 
         public static async Task<IList<SearchResult>> Search(string query)
