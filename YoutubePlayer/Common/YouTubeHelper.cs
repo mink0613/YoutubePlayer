@@ -1,13 +1,47 @@
-﻿using System.IO;
+﻿using Google.Apis.Services;
+using Google.Apis.YouTube.v3;
+using Google.Apis.YouTube.v3.Data;
+using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace YoutubePlayer.Common
 {
     public class YouTubeHelper
     {
-        private static Regex _youTubeURLIDRegex = new Regex(@"[\?&]v=(?<v>[^&]+)");
+        private static readonly Regex _youTubeURLIDRegex = new Regex(@"[\?&]v=(?<v>[^&]+)");
+
+        private static readonly string _apiKeyFile = "ApiKey.txt";
+
+        private static string _googleApiKey = string.Empty;
 
         private static readonly string _youTubeEmbedUrl = "https://www.youtube.com/embed/";
+
+        private static void ReadApiKey()
+        {
+            string path = Path.Combine(Helper.ProjectPath, "ApiKey", _apiKeyFile);
+            using (StreamReader reader = new StreamReader(path))
+            {
+                _googleApiKey = reader.ReadLine();
+            }
+        }
+
+        private static YouTubeService GetYouTubeService()
+        {
+            if (_googleApiKey == string.Empty)
+            {
+                ReadApiKey();
+            }
+
+            var youtube = new YouTubeService(new BaseClientService.Initializer()
+            {
+                ApiKey = _googleApiKey,
+                ApplicationName = "YouTube Player"
+            });
+
+            return youtube;
+        }
 
         /// <summary>
         /// Deprecated: YouTube does not support anymore
@@ -68,6 +102,42 @@ namespace YoutubePlayer.Common
             string source = _youTubeEmbedUrl + id;
 
             return GetEmbeddedYouTubeUrl(source);
+        }
+
+        public static async Task<IList<SearchResult>> Search(string query)
+        {
+            var youtube = GetYouTubeService();
+
+            var request = youtube.Search.List("snippet");
+            request.Q = query;
+            request.MaxResults = 25;
+
+            var result = await request.ExecuteAsync();
+            return result.Items;
+        }
+
+        public static async Task<IList<Playlist>> GetPlayList(string id)
+        {
+            var youtube = GetYouTubeService();
+
+            var request = youtube.Playlists.List("snippet");
+            request.Id = id;
+            request.MaxResults = 25;
+
+            var result = await request.ExecuteAsync();
+            return result.Items;
+        }
+
+        public static async Task<IList<Video>> GetVideos(string id)
+        {
+            var youtube = GetYouTubeService();
+
+            var request = youtube.Videos.List("snippet");
+            request.Id = id;
+            request.MaxResults = 25;
+
+            var result = await request.ExecuteAsync();
+            return result.Items;
         }
     }
 }

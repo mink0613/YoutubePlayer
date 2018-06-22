@@ -1,6 +1,4 @@
-﻿using Google.Apis.Services;
-using Google.Apis.YouTube.v3;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
@@ -111,21 +109,11 @@ namespace YoutubePlayer.ViewModel
                 return;
             }
             
-            var youtube = new YouTubeService(new BaseClientService.Initializer()
-            {
-                ApiKey = _googleApiKey,
-                ApplicationName = "YouTube Player"
-            });
-            
-            var request = youtube.Search.List("snippet");
-            request.Q = SearchQuery;
-            request.MaxResults = 25;
-
-            var result = await request.ExecuteAsync();
+            var items = await YouTubeHelper.Search(SearchQuery);
 
             SearchList.Clear();
 
-            foreach (var item in result.Items)
+            foreach (var item in items)
             {
                 if (item.Id.Kind == "youtube#video")
                 {
