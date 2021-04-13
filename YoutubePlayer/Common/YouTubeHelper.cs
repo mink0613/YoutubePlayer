@@ -36,6 +36,11 @@ namespace YoutubePlayer.Common
                 ReadApiKey();
             }
 
+            if (_googleApiKey == null || _googleApiKey == string.Empty)
+            {
+                return null;
+            }
+
             var youtube = new YouTubeService(new BaseClientService.Initializer()
             {
                 ApiKey = _googleApiKey,
@@ -111,9 +116,18 @@ namespace YoutubePlayer.Common
             return _baseYoutubeUrl;
         }
 
+        /// <summary>
+        /// Search youtube list with query.
+        /// </summary>
+        /// <param name="query">Youtube search query</param>
+        /// <returns>If search result is null, return empty list. If search success, then return its result</returns>
         public static async Task<IList<SearchResult>> Search(string query)
         {
             var youtube = GetYouTubeService();
+            if (youtube == null)
+            {
+                return new List<SearchResult>();
+            }
 
             var request = youtube.Search.List("snippet");
             request.Q = query;
@@ -123,9 +137,18 @@ namespace YoutubePlayer.Common
             return result.Items;
         }
 
+        /// <summary>
+        /// Search user's saved youtube play list with its id
+        /// </summary>
+        /// <param name="id">Youtube id</param>
+        /// <returns>If search result is null, return empty list. If search success, then return its result</returns>
         public static async Task<IList<Playlist>> GetPlayList(string id)
         {
             var youtube = GetYouTubeService();
+            if (youtube == null)
+            {
+                return new List<Playlist>();
+            }
 
             var request = youtube.Playlists.List("snippet");
             request.Id = id;
@@ -135,9 +158,18 @@ namespace YoutubePlayer.Common
             return result.Items;
         }
 
+        /// <summary>
+        /// Search user's video list with its id
+        /// </summary>
+        /// <param name="id">Youtube id</param>
+        /// <returns>If search result is null, return empty list. If search success, then return its result</returns>
         public static async Task<IList<Video>> GetVideos(string id)
         {
             var youtube = GetYouTubeService();
+            if (youtube == null)
+            {
+                return new List<Video>();
+            }
 
             var request = youtube.Videos.List("snippet");
             request.Id = id;

@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Windows;
 using System.Windows.Input;
 using YoutubePlayer.Common;
 using YoutubePlayer.Model;
@@ -32,7 +33,7 @@ namespace YoutubePlayer.ViewModel
         #endregion
 
         #region Private Variables
-        private readonly int _originalWidth = 310;
+        private readonly int _originalWidth = 320;
 
         private readonly int _extendedWidth = 650;
 
